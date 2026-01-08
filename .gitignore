@@ -1,0 +1,48 @@
+# ---- Python virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Python cache / compiled files ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ---- Jupyter / IPython ----
+.ipynb_checkpoints/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+
+# ---- Data (keep raw + processed data out of git) ----
+data/
+raw/
+bronze/
+silver/
+gold/
+
+# ---- Parquet / large binary files ----
+*.parquet
+*.arrow
+*.feather
+
+# ---- Temporary / scratch files ----
+scratch.py
+tmp/
+temp/
+
+# ---- Model artifacts ----
+models/
+checkpoints/
+*.pt
+*.pth
+*.joblib
+*.pkl
+
+# ---- Environment / secrets ----
+.env
+.env.*
