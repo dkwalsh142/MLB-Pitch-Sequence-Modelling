@@ -16,19 +16,30 @@ game_pks = get_game_pks(start_date, end_date)
 print(len(game_pks))
 print(game_pks)
 
-for game_pk in game_pks:
+temp_game_pks = ["745927"]
+
+for game_pk in temp_game_pks:
     df = get_pitch_feed(game_pk)
     write_parquet_file(
         df, 
         f"data/bronze/game_{game_pk}.parquet"
         )
-    
 
-# df_read = pd.read_parquet(
-#     "data/bronze/game_746817.parquet",
-#     engine="pyarrow"
-# )
-# print(df_read)
+
+#      Column               Dtype 
+# ---  ------               ----- 
+#  0   game_pk              int64 
+#  1   ab_idx               int64 
+#  2   pitch_num_in_pa      int64 
+#  3   inning               int64 
+#  4   pitcher_id           int64 
+#  5   batter_id            int64 
+#  6   pitcher_hand         object
+#  7   batter_hand          object
+#  8   pitcher_is_home      bool  
+#  9   balls_after_pitch    int64 
+#  10  strikes_after_pitch  int64 
+#  11  pitch_type           object
 
 
 

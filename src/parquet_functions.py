@@ -14,3 +14,4 @@ def write_parquet_file(df: pd.DataFrame, path: str):
         path,
         compression="snappy"
     )
+
