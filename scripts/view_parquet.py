@@ -1,8 +1,9 @@
+import argparse
 import pandas as pd
 
 #debug tool to view parquets
 
-PARQUET_PATH = "data/silver/dims/pitch_lookup.parquet"
+PARQUET_PATH = "data/silver/game_745927.parquet"
 
 def inspect_df(
     df: pd.DataFrame,
@@ -28,10 +29,14 @@ def inspect_df(
     old_max_cols = pd.get_option("display.max_columns")
     old_max_rows = pd.get_option("display.max_rows")
     old_max_colwidth = pd.get_option("display.max_colwidth")
+    old_width = pd.get_option("display.width")
 
     try:
         # Apply requested display options.
-        if max_columns is not None:
+        if max_columns is None:
+            pd.set_option("display.width", None)  # Disable width limit only when showing all columns
+            pd.set_option("display.max_columns", None)  # Show all columns
+        elif max_columns is not None:
             pd.set_option("display.max_columns", max_columns)
         if max_rows is not None:
             pd.set_option("display.max_rows", max_rows)
@@ -65,9 +70,18 @@ def inspect_df(
         pd.set_option("display.max_columns", old_max_cols)
         pd.set_option("display.max_rows", old_max_rows)
         pd.set_option("display.max_colwidth", old_max_colwidth)
+        pd.set_option("display.width", old_width)
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="View parquet files with optional column display control")
+    parser.add_argument(
+        "--all-columns",
+        action="store_true",
+        help="Show all columns (default: uses pandas default column limit)"
+    )
+    args = parser.parse_args()
+
     df_read = pd.read_parquet(PARQUET_PATH, engine="pyarrow")
 
     inspect_df(
@@ -80,7 +94,7 @@ def main() -> None:
         show_head=True,
         show_tail=True,
         transpose_head=False,
-        max_columns=None,     # show ALL columns in head output
+        max_columns=None if args.all_columns else 20,  # Default to 20 columns max
         max_colwidth=None,    # do not truncate long strings
         # max_rows=None       # keep default to avoid massive prints
     )
