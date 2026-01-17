@@ -1,6 +1,7 @@
 # ---- Python virtual environments ----
 .venv/
 venv/
+venv311/
 env/
 
 # ---- Python cache / compiled files ----
@@ -36,7 +37,7 @@ tmp/
 temp/
 
 # ---- Model artifacts ----
-models/
+/models/
 checkpoints/
 *.pt
 *.pth
