@@ -98,3 +98,21 @@ def get_pitch_feed(game_pk):
             })
 
     return pd.DataFrame(pitch_data)
+
+
+def print_game_dates(game_pks):
+    for game_pk in game_pks:
+        url = "https://statsapi.mlb.com/api/v1/schedule"
+        params = {"gamePk": game_pk}
+
+        resp = requests.get(url, params=params)
+        resp.raise_for_status()
+        data = resp.json()
+
+        dates = data.get("dates", [])
+        if not dates:
+            print(f"{game_pk}: date not found")
+            continue
+
+        game_date = dates[0]["date"]
+        print(f"{game_pk}: {game_date}")

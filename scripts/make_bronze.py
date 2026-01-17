@@ -7,6 +7,7 @@ import pyarrow.parquet as pq
 
 from src.mlb_api import get_game_pks
 from src.mlb_api import get_pitch_feed
+from src.mlb_api import print_game_dates
 from src.parquet_functions import write_parquet_file
 
 start_date = "2024-04-01"
@@ -14,11 +15,12 @@ end_date = "2024-04-07"
 
 game_pks = get_game_pks(start_date, end_date)
 print(len(game_pks))
-print(game_pks)
+#print(game_pks)
+#print_game_dates(game_pks)
 
-temp_game_pks = ["745927"]
 
-for game_pk in temp_game_pks:
+
+for game_pk in game_pks:
     df = get_pitch_feed(game_pk)
     write_parquet_file(
         df, 

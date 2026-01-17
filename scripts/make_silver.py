@@ -2,8 +2,6 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 
 from src.parquet_functions import write_parquet_file
 from src.dims import update_lookup_table
@@ -18,7 +16,7 @@ DIMS_DIR.mkdir(parents=True, exist_ok=True)
 # Load pitch lookup table
 pitch_lookup = pd.read_parquet(DIMS_DIR / "pitch_lookup.parquet")
 
-for file_path in sorted(DATA_DIR.iterdir()):
+for file_path in sorted(DATA_DIR.iterdir(), key=lambda p: p.stat().st_mtime):
     if not file_path.is_file():
         continue
     if file_path.suffix != ".parquet":
@@ -82,14 +80,14 @@ for file_path in sorted(DATA_DIR.iterdir()):
 
     #Create Previuous Pithc Collumns: P-1, P-2, P-3
     #P-1
-    df["pitch-1_idx"] = g["pitch_idx"].shift(1).fillna(0).astype("int8")
-    df["pitch-1_bucket_idx"] = g["pitch_bucket_idx"].shift(1).fillna(0).astype("int8")
+    df["pitch_1_idx"] = g["pitch_idx"].shift(1).fillna(0).astype("int8")
+    df["pitch_1_bucket_idx"] = g["pitch_bucket_idx"].shift(1).fillna(0).astype("int8")
     #P-2
-    df["pitch-2_idx"] = g["pitch_idx"].shift(2).fillna(0).astype("int8")
-    df["pitch-2_bucket_idx"] = g["pitch_bucket_idx"].shift(2).fillna(0).astype("int8")
+    df["pitch_2_idx"] = g["pitch_idx"].shift(2).fillna(0).astype("int8")
+    df["pitch_2_bucket_idx"] = g["pitch_bucket_idx"].shift(2).fillna(0).astype("int8")
     #P-3
-    df["pitch-3_idx"] = g["pitch_idx"].shift(3).fillna(0).astype("int8")
-    df["pitch-3_bucket_idx"] = g["pitch_bucket_idx"].shift(3).fillna(0).astype("int8")
+    df["pitch_3_idx"] = g["pitch_idx"].shift(3).fillna(0).astype("int8")
+    df["pitch_3_bucket_idx"] = g["pitch_bucket_idx"].shift(3).fillna(0).astype("int8")
 
 
     # --- Fail loudly if mapping missed anything
@@ -130,9 +128,9 @@ for file_path in sorted(DATA_DIR.iterdir()):
     # 10  strikes_before_pitch  int8  
     # 11  pitch_idx             int64 
     # 12  pitch_bucket_idx      int64 
-    # 13  pitch-1_idx           int8  
-    # 14  pitch-1_bucket_idx    int8  
-    # 15  pitch-2_idx           int8  
-    # 16  pitch-2_bucket_idx    int8  
-    # 17  pitch-3_idx           int8  
-    # 18  pitch-3_bucket_idx    int8  
+    # 13  pitch_1_idx           int8  
+    # 14  pitch_1_bucket_idx    int8  
+    # 15  pitch_2_idx           int8  
+    # 16  pitch_2_bucket_idx    int8  
+    # 17  pitch_3_idx           int8  
+    # 18  pitch_3_bucket_idx    int8  
