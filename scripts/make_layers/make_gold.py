@@ -13,7 +13,9 @@ TRAIN_DEST.mkdir(parents=True, exist_ok=True)
 VAL_DEST.mkdir(parents=True, exist_ok=True)
 TEST_DEST.mkdir(parents=True, exist_ok=True)
 
-num_files = sum(p.is_file() for p in DATA_DIR.iterdir())
+# Get all parquet files sorted by filename (which includes date)
+parquet_files = sorted(DATA_DIR.glob("*.parquet"))
+num_files = len(parquet_files)
 
 TRAIN_SPLIT = .8
 VAL_SPLIT = .1
@@ -22,14 +24,7 @@ TEST_SPLIT = .1
 final_train_index = TRAIN_SPLIT * num_files
 final_val_index = final_train_index + VAL_SPLIT * num_files
 
-i = 0
-
-for file_path in sorted(DATA_DIR.iterdir(), key=lambda p: p.stat().st_mtime):
-    if not file_path.is_file():
-        continue
-    if file_path.suffix != ".parquet":
-        continue
-
+for i, file_path in enumerate(parquet_files):
     if i < final_train_index:
         dest = TRAIN_DEST / file_path.name
         shutil.copy2(file_path, dest)
@@ -39,5 +34,3 @@ for file_path in sorted(DATA_DIR.iterdir(), key=lambda p: p.stat().st_mtime):
     else:
         dest = TEST_DEST / file_path.name
         shutil.copy2(file_path, dest)
-
-    i += 1

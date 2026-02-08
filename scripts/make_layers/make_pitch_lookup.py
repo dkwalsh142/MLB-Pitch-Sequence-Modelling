@@ -7,13 +7,17 @@ import pandas as pd
 from src.parquet_functions import write_parquet_file
 from src.dims import update_lookup_table
 
+# Index 0 is reserved for padding/no previous pitch
+# Actual pitch types use indices 1-13
 PITCH_TYPES = {"FF", "FT", "SI", "FC", "SL", "CU", "KC", "SV", "ST", "CH", "FS", "FO", "UN"}
 
 FASTBALLS = {"FF", "FT", "SI", "FC"}
 BREAKING  = {"SL", "CU", "KC", "SV", "ST"}
 OFFSPEED  = {"CH", "FS", "FO", "UN"}
 
+# Keep 1-indexed for actual pitches (0 is reserved for padding)
 PITCH_INDEXES = {"FF": 1, "FT": 2, "SI": 3, "FC": 4, "SL": 5, "CU": 6, "KC": 7, "SV": 8, "ST": 9, "CH": 10, "FS": 11, "FO": 12, "UN": 13}
+# Keep 1-indexed for buckets (0 is reserved for padding)
 BUCKET_INDEXES = {"fastball": 1, "breaking": 2, "offspeed": 3}
 
 pitch_data = []

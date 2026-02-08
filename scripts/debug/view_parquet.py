@@ -3,7 +3,7 @@ import pandas as pd
 
 #debug tool to view parquets
 
-PARQUET_PATH = "data/silver/game_745927.parquet"
+PARQUET_PATH = "data/bronze/game_716352.parquet"
 
 def inspect_df(
     df: pd.DataFrame,

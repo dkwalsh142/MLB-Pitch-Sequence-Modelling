@@ -66,6 +66,13 @@ def build_pitch_model(
     p1 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_1_idx")
     p2 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_2_idx")
     p3 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_3_idx")
+    p4 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_4_idx")
+    p5 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_5_idx")
+    p6 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_6_idx")
+    p7 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_7_idx")
+    p8 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_8_idx")
+    p9 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_9_idx")
+    p10 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_10_idx")
 
     # pitch-1_bucket_idx, ...
     b1 = L.Input(shape=(1,), dtype=tf.int32, name="pitch_1_bucket_idx")
@@ -79,12 +86,19 @@ def build_pitch_model(
     p1v = L.Flatten()(p_emb_layer(p1))
     p2v = L.Flatten()(p_emb_layer(p2))
     p3v = L.Flatten()(p_emb_layer(p3))
+    p4v = L.Flatten()(p_emb_layer(p4))
+    p5v = L.Flatten()(p_emb_layer(p5))
+    p6v = L.Flatten()(p_emb_layer(p6))
+    p7v = L.Flatten()(p_emb_layer(p7))
+    p8v = L.Flatten()(p_emb_layer(p8))
+    p9v = L.Flatten()(p_emb_layer(p9))
+    p10v = L.Flatten()(p_emb_layer(p10))
 
     b1v = L.Flatten()(b_emb_layer(b1))
     b2v = L.Flatten()(b_emb_layer(b2))
     b3v = L.Flatten()(b_emb_layer(b3))
 
-    lag_vec = L.Concatenate(name="lag_concat")([p1v, p2v, p3v, b1v, b2v, b3v])
+    lag_vec = L.Concatenate(name="lag_concat")([p1v, p2v, p3v, p4v, p5v, p6v, p7v, p8v, p9v, p10v, b1v, b2v, b3v])
 
     # -------------------------
     # Combine all features
@@ -118,11 +132,11 @@ def build_pitch_model(
             pitcher_is_home, pitcher_is_right, batter_is_right,
             pitch_num_in_pa,
             pitcher_idx, batter_idx,
-            p1, p2, p3,
+            p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,
             b1, b2, b3,
         ],
         outputs=y,
-        name="pitch_sequence_baseline",
+        name="pitch_sequence_ten_lags",
     )
 
     optimizer = tf.keras.optimizers.Adam(
