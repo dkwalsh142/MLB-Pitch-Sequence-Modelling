@@ -1,0 +1,6 @@
+requests
+pandas
+pyarrow
+tensorflow==2.8.4
+matplotlib
+scikit-learn

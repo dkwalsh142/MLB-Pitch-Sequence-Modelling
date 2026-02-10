@@ -47,3 +47,9 @@ checkpoints/
 # ---- Environment / secrets ----
 .env
 .env.*
+
+# ---- CUDA / cuDNN installation files ----
+cudnn*.tgz
+cudnn*.tar.xz
+cuda-keyring*.deb
+cuda/
